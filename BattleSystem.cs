@@ -35,7 +35,37 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
-
+    //AAAHHHHHAHAHHAH
+    public LinkedList<Unit> getUnitTurn(ArrayList<Unit> units)
+    {
+      LinkedList<Unit> order = new LinkedList<>();
+      int[] speeds = new int[units.size()];
+      for(int index = 0; index < speeds.length; index++)
+      {
+        int statusChange = 0;
+        Unit check = units.get(index);
+        if(check.status.equals("slow"))
+          statusChange = SLOW_NUM;
+        else if(check.status.equals("fast"))
+          statusChange = FAST_NUM;
+        speeds[index] = check.speed + statusChange;
+      }
+      //increment stuff, can do mulitple times
+      for(int index = 0; index < speeds.length; index++)
+      {
+        int check = speeds[index];
+        if(check == MAX_INCREMENT) //99
+        {
+          order.addLast(units.get(index));
+          //OR unitTurn method for example - turn(units.get(index))
+          speeds[index] = check - MAX_INCREMENT; 
+        }
+        else
+          speeds[index] = check++; //possible multiplier here
+      }
+      return order;
+    }
+    
     IEnumerator SetupBattle()
     {
         /**
